@@ -6,3 +6,4 @@ The other runs on your router, monitor.py. It monitors /sys/class/net/eth0/stati
 
 This code isn't beutiful. I might clean it up if I get to give a talk about MicroPython.
 
+[![Micropython bandwidth monitor demo](http://img.youtube.com/vi/d9chaeEB2X0/0.jpg)](http://www.youtube.com/watch?v=d9chaeEB2X0 "Micropython bandwidth monitor")
