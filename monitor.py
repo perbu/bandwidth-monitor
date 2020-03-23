@@ -55,7 +55,12 @@ def superloop():
             MESSAGE = f"{avg_rxd} {avg_txd}"
             print(MESSAGE)
             MESSAGE = MESSAGE.encode('ascii')
-            sock.sendto(MESSAGE, (UDP_IP, UDP_PORT))
+            try:
+                sock.sendto(MESSAGE, (UDP_IP, UDP_PORT))
+            except Exception as e:
+                print("Exception caught:", e)
+                # I'm sure it is temporary. Sleep 10s.
+                time.sleep(10)
 
         first_run = False
         rx1 = rx0
