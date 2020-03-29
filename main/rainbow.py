@@ -4,7 +4,7 @@ import socket
 
 
 class RainbowMonitor():
-    def __init__(self,pin=14,
+    def __init__(self,pin=26,
                  num_pixels=48, rainbow_offset=40):
         # UDP Port to listen on.
         self.num_pixels = num_pixels
@@ -46,7 +46,7 @@ class RainbowMonitor():
 
     def superloop(self):
         # Internal led
-        led = Pin(2, Pin.OUT)
+        led = Pin(25, Pin.OUT)
         ledstate = False
         while True:
             led.value(ledstate)
@@ -63,6 +63,3 @@ class RainbowMonitor():
             self.pixels.write()
 
 
-r = RainbowMonitor()
-r.listen(666)
-r.superloop()
