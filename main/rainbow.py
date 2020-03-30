@@ -1,4 +1,5 @@
-from machine import Pin
+from machine import Pin, I2C
+import ssd1306
 import neopixel
 import socket
 
@@ -11,6 +12,9 @@ class RainbowMonitor():
         self.rainbow_offset = rainbow_offset
         p = Pin(pin, Pin.OUT)
         self.pixels = neopixel.NeoPixel(p, num_pixels)
+        i2c = I2C(1, scl=Pin(22), sda=Pin(21))
+        self.oled = ssd1306.SSD1306_I2C(128, 32, i2c)
+
 
     def listen(self,port=666):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -54,7 +58,13 @@ class RainbowMonitor():
             rx, tx = 0, 0
             data, addr = self.sock.recvfrom(1024)
             data = data.decode('ascii')
-            rx, tx = data.split(' ', 2)
+            rx, tx, relrx, reltx = data.split(' ', 4)
+            relrx = float(relrx)
+            reltx = float(reltx)
+            self.oled.fill(0)
+            self.oled.text('RX: {:5.2f}%'.format(relrx),0,0)
+            self.oled.text('TX: {:5.2f}%'.format(relrx),0,10)
+            self.oled.show()
             rx = int(rx)
             tx = int(tx)
             self.blank()
