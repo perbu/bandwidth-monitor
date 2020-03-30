@@ -47,7 +47,7 @@ class RainbowMonitor():
     def superloop(self):
         # Internal led
         led = Pin(25, Pin.OUT)
-        ledstate = False
+        ledstate = True
         while True:
             led.value(ledstate)
             ledstate = not ledstate
@@ -59,7 +59,5 @@ class RainbowMonitor():
             tx = int(tx)
             self.blank()
             self.set_rainbow(rx, 0)
-            self.set_rainbow(tx, (num_pixels // 2))
+            self.set_rainbow(tx, (self.num_pixels // 2))
             self.pixels.write()
-
-
