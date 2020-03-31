@@ -56,17 +56,27 @@ class RainbowMonitor():
             led.value(ledstate)
             ledstate = not ledstate
             rx, tx = 0, 0
-            data, addr = self.sock.recvfrom(1024)
-            data = data.decode('ascii')
-            rx, tx, relrx, reltx = data.split(' ', 4)
-            relrx = float(relrx)
-            reltx = float(reltx)
+            try:
+                data, addr = self.sock.recvfrom(1024)
+            except Exception as e:
+                print('Network error', e)
+            try:
+                data = data.decode('ascii')
+                rx, tx, relrx, reltx = data.split(' ', 4)
+                relrx = float(relrx)
+                reltx = float(reltx)
+                rx = int(rx)
+                tx = int(tx)
+            except Exception as e:
+                print('Parser error', e) 
+
+
             self.oled.fill(0)
-            self.oled.text('RX: {:5.2f}%'.format(relrx),0,0)
-            self.oled.text('TX: {:5.2f}%'.format(relrx),0,10)
+            if (relrx > 5 or reltx > 5):
+                self.oled.text('RX: {:5.2f}%'.format(relrx),0,0)
+                self.oled.text('TX: {:5.2f}%'.format(reltx),0,10)
+            
             self.oled.show()
-            rx = int(rx)
-            tx = int(tx)
             self.blank()
             self.set_rainbow(rx, 0)
             self.set_rainbow(tx, (self.num_pixels // 2))
